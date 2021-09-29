@@ -91,9 +91,9 @@ var createTaskEl = function (taskDataObj) {
     taskIdCounter++;
   };
 
-  var createTaskActions = function(taskId) {
-      var actionContainerEl = document.createElement("div");
-      actionContainerEl.className = "task-actions";
+var createTaskActions = function(taskId) {
+    var actionContainerEl = document.createElement("div");
+    actionContainerEl.className = "task-actions";
 
 
     //   create edit button
@@ -127,7 +127,7 @@ var createTaskEl = function (taskDataObj) {
 
         // append to select
         statusSelectEl.appendChild(statusOptionEl);
-    };
+};
 
     actionContainerEl.appendChild(statusSelectEl);
 
@@ -214,12 +214,35 @@ var createTaskEl = function (taskDataObj) {
     }
 
     saveTasks();
-  };
+};
 
-  var saveTasks = function() {
-      localStorage.setItem('tasks', JSON.stringify(tasks));
-  }
+var saveTasks = function() {
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+};
+  
+var loadTasks = function() {
+    var savedTasks = localStorage.getItem("tasks");
+    // if there are no tasks, set tasks to an empty array and return out of the function
+    if (!savedTasks) {
+      return false;
+    }
+    console.log("Saved tasks found!");
+    // else, load up saved tasks
+  
+    // parse into array of objects
+    savedTasks = JSON.parse(savedTasks);
+  
+    // loop through savedTasks array
+    for (var i = 0; i < savedTasks.length; i++) {
+      // pass each task object into the `createTaskEl()` function
+      createTaskEl(savedTasks[i]);
+    }
+};
 
-  formEl.addEventListener("submit", taskFormHandler);
-  pageContentEl.addEventListener('click', taskButtonHandler);
-  pageContentEl.addEventListener('change', taskStatusChangeHandler);
+
+
+formEl.addEventListener("submit", taskFormHandler);
+pageContentEl.addEventListener('click', taskButtonHandler);
+pageContentEl.addEventListener('change', taskStatusChangeHandler);
+
+loadTasks();
